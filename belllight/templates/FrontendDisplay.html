@@ -1,0 +1,52 @@
+<div class="bellLight">
+    <div class="bellLight__w">
+        <div class="bellLight__close">×</div>
+        <h2 class="bellLight__h">Заказать обратный звонок</h2>
+        <div class="bellLight__bid">
+            <form class="bellLight__form" action="">
+                <input class="bellLight__input bellLight__input_name" name="bellLight__name" type="text" placeholder="Имя" />
+                <input class="bellLight__input bellLight__input_phone" name="bellLight__phone" type="tel" placeholder="Телефон" />
+                {if $settings.mess}
+                <textarea class="bellLight__mess" name="bellLight__mess" placeholder="Комментарий"></textarea>
+                {/if}
+                <input class="bellLight__submit" type="submit" value="Заказать звонок" />
+            </form>
+            <div class="bellLight__antispam">{$belllightAntispam}</div>
+            <div class="bellLight__politika">
+                {if $settings.policy_checkbox}
+                <input class="bellLight__policyCheckbox" name="policy_checkbox" type="checkbox" />
+                {/if}
+                {$settings.politika}
+            </div>
+        </div>
+        <div class="bellLight__thank">
+            <div>
+            	{$settings.thank}
+            </div>
+            <button class="bellLight__button">закрыть</button>
+        </div>
+    </div>
+</div>
+
+{if $settings.button_a && (($wa->isMobile() && $settings.button_a_mobile) ||  !$wa->isMobile())}
+<div class="bellLightB">
+    <div class="bellLightB__pulse">
+        <div class="bellLightB__phone"></div>
+    </div>
+</div>
+{/if}
+
+<div class="bellLightW"></div>
+<script>
+    $(function() {
+        $.bellLight.init({
+            'selector': '{$settings.selector}',
+            {if $settings.policy_checkbox}'policyCheckbox': true,{/if}
+            {if $settings.mask}'mask': '{$settings.mask_view}',{/if}
+            {if $settings.yandex_counter}'yandex_counter': '{$settings.yandex_counter}',{/if}
+            {if $settings.yandex_click}'yandex_click': '{$settings.yandex_click}',{/if}
+            {if $settings.yandex_send}'yandex_send': '{$settings.yandex_send}',{/if}
+            'url': '{$settings.url}',
+        });
+    });
+</script>

@@ -1,0 +1,114 @@
+<div class="sidebar left250px" id="s-sidebar">
+    <div class="block">
+        <ul class="menu-v with-icons">
+            <li id="s-all-products"{if $status == "active"} class="selected"{/if}>
+                <a href="?plugin=belllight" class="s-product-list">
+                    <span class="count">{$countListStatus.active}</span>
+                    <i class="icon16 ss new"></i>Активные
+                </a>
+            </li>
+            <li id="s-all-products"{if $status == "delete"} class="selected"{/if}>
+                <a href="?plugin=belllight&status=delete" class="s-product-list">
+                    <span class="count">{$countListStatus.delete}</span>
+                    <i class="icon16 ss visibility"></i>Удаленные
+                </a>
+            </li>
+            <li id="s-all-products"{if $status == "export"} class="selected"{/if}>
+                <a href="?plugin=belllight&status=export" class="s-product-list">
+                    <span class="count"></span>
+                    <i class="icon16 ss excel"></i>Экспорт в CSV
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="content left250px blank">
+    <div class="block double-padded">
+        <h1>{$title}</h1>
+        
+        {if $status != 'export'}
+            {if !empty($list)}
+                <style>
+                    .zebra td { border-bottom:1px solid #f1f1f1!important; }
+                    .list__new td { background:#ffc!important; }
+                </style>
+                <table class="zebra single-lined">
+                    <tr class="header">
+                        <th>id</th>
+                        <th>Контакт</th>
+                        <th>Телефон</th>
+                        <th>Дата</th>
+                        <th>Страница</th>
+                        <th>Комментарий</th>
+                        <th></th>
+                    </tr>
+                    {foreach $list as $l}
+                    <tr{if $l.status == 'new'} class="list__new"{/if}>
+                        <td>{$l.id}</td>
+                        <td>{$l.name}</td>
+                        <td>{$l.phone}</td>
+                        <td>{$l.data}</td>
+                        <td><a href="{$l.link}" target="_blank">{$l.link}</a></td>
+                        <td>{if $l.text != ''}{$l.text}{else}-{/if}</td>
+                        <td class="align-center">
+                            {if $status != 'delete'}
+                            <div class="list__delete" data-id="{$l.id}"><i class="icon16 delete"></i></div>
+                            {/if}
+                        </td>
+                    </tr>
+                    {/foreach}
+                </table>
+
+                <script type="text/javascript">
+                    {include file="../../../js/backend.list.js"}
+                </script>
+                
+                {if $pagesCount>1}
+                <div class="block pagination">
+                    {wa_pagination total=$pagesCount attrs=['class' => "menu-h block top-padded"]}
+                </div>
+                {/if}
+            {else}
+                <p>Список пуст.</p>
+            {/if}
+
+        {else}
+            {if !empty($list)}
+                <form method="post">
+                    {$wa->csrf()}
+                    <div class="field-group">
+                        <div class="field">
+                            <div class="name">
+                               Статусы
+                            </div>
+                            <div class="value">
+                                <select name="status_export">
+                                    {if $countListStatus.active > 0}
+                                        <option value="active" selected="selected">Активные</option>
+                                    {/if}
+                                    {if $countListStatus.delete > 0}
+                                        <option value="delete">Удаленые</option>
+                                    {/if}
+                                    {if $countListStatus.active > 0 && $countListStatus.delete > 0}
+                                        <option value="all">Все</option>
+                                    {/if}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field-group">
+                        <div class="field">
+                            <div class="value submit">
+                                <input type="submit" class="button green" value="Экспортировать">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            {else}
+                <p>Список пуст. Экспорт не возможен.</p>
+            {/if}
+
+        {/if}
+    </div>
+</div>
