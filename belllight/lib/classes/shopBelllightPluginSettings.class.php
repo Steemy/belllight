@@ -95,7 +95,16 @@ class shopBelllightPluginSettings
         foreach($this->settingsDefault as $key=>$value)
         {
             if(empty($settings[$key]))
+            {
                 $settings[$key] = $value;
+            }
+            elseif(is_array($value))
+            {
+                foreach($settings[$key] as $k=>$v) {
+                    if(empty($settings[$key][$k]))
+                        $settings[$key][$k] = $value[$k];
+                }
+            }
         }
     }
 

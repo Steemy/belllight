@@ -44,6 +44,8 @@ class shopBelllightPluginBackendActions extends waViewActions
             'delete' => $model->count('delete'),
         );
 
+        $list = array();
+
         if($status != 'export')
         {
             /*
@@ -67,22 +69,12 @@ class shopBelllightPluginBackendActions extends waViewActions
             if($status == 'active')
                 $model->updateStatus();
         }
-        else
-        {
-            /*
-             * - Экспорт в csv
-             */
 
-            $list = $model->getList(0, 99999, 'all');
-            $statusExport = waRequest::post("status_export");
-
-            if($statusExport)
-            {
-                $titles = array("id", "Имя", "Телефон", "Дата", "Ссылка", "Комментарий", "Статус");
-                $shopPluginExport = new shopBelllightPluginExport();
-                $shopPluginExport->arrayToCsv($list, $titles);
-            }
-        }
+        /**
+         * Экспорт в csv
+         */
+        $shopBelllightPluginExport = new shopBelllightPluginExport();
+        $shopBelllightPluginExport->execute();
 
         $this->view->assign('list', $list);
         $this->view->assign('countListStatus', $countListStatus);

@@ -10,7 +10,7 @@
 return array(
     'name' => 'Обратный звонок (lite)',
     'description' => 'Заказать обратный звонок',
-    'version'=>'1.3.3',
+    'version'=>'1.4.0',
     'vendor' => '989788',
     'img' => 'img/icon.png',
     'shop_settings' => true,

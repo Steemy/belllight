@@ -18,6 +18,7 @@
         {$wa->csrf()}
         <ul class="tabs">
             <li class="selected"><a href="#/belllight/">[`Settings`]</a></li>
+            <li><a href="#/belllight/">Уведомления</a></li>
             <li><a href="#/belllight/">[s`Design`]</a></li>
         </ul>
         <div class="tab-content">
@@ -61,10 +62,78 @@
                 </div>
 
                 <div class="field">
+                    <div class="name">Тема письма:</div>
+                    <div class="value CodeMirrorBlock">
+                        <input type="text" name="shop_plugins[theme]" value="{$settings.theme}" placeholder="mail@mail" />
+
+                    </div>
+                </div>
+                <div class="field">
                     <div class="name">Текст спасибо:</div>
                     <div class="value CodeMirrorBlock">
                         <textarea class="codemirror-area" data-object="thank" data-mode="text/html" name="shop_plugins[thank]">{$settings.thank}</textarea>
                         <p></p>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="name">Шаблон e-mail уведомления:</div>
+                    <div class="value CodeMirrorBlock">
+                        <textarea class="codemirror-area" data-object="thank" data-mode="text/html" name="shop_plugins[templates_email]">{$settings.templates_email}</textarea>
+                        <p></p>
+                    </div>
+                </div>
+
+                <div class="field"><h3>Цели Яндекс метрики</h3></div>
+                <div class="field">
+                    <div class="name">Номер счетчика:</div>
+                    <div class="value">
+                        <input type="text" name="shop_plugins[yandex_counter]" value="{$settings.yandex_counter}" />
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="name">Открыли форму:</div>
+                    <div class="value">
+                        <input type="text" name="shop_plugins[yandex_click]" value="{$settings.yandex_click}" />
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="name">Отправили форму:</div>
+                    <div class="value">
+                        <input type="text" name="shop_plugins[yandex_send]" value="{$settings.yandex_send}" />
+                    </div>
+                </div>
+                <p><br /></p>
+            </div>
+
+            <div class="block top-padded">
+                <div class="field"><h3>Настройки уведомления в вконтакте</h3></div>
+                <div class="field">
+                    <div class="name">Отправка уведомления в вконтакте:</div>
+                    <div class="value">
+                        <div class="ibutton-checkbox">
+                            <ul class="menu-h">
+                                <li><span id="switcher-off-label">Нет</span></li>
+                                <li><input class="switcher" type="checkbox" name="shop_plugins[vk]"{if $settings.vk} checked="checked"{/if} value="1" /></li>
+                                <li><span id="switcher-on-label">Да</span></li>
+                            </ul>
+                            <p class="hint">надо ли отправлять уведомление в телеграм</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="name">vk id получателя:</div>
+                    <div class="value">
+                        <input type="text" name="shop_plugins[vk_id]" value="{$settings.vk_id}" />
+                        <p class="hint">пропишите id вашего аккаунта вконтакте который будет получать уведомелния</p>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="name">Токен:</div>
+                    <div class="value">
+                        <input type="text" name="shop_plugins[vk_token]" value="{$settings.vk_token}" />
+                        <p class="hint">Пропишите Токен для отправки, токен получает акканут от которого будут приходить уведомления <a href="https://www.webasyst.ru/store/plugin/shop/belllight/" target="_blank">ссылка как получить</a>.<br />
+                        Получайте токен лучше от аккаунта отличного от получателя.</p>
+                        <br />
                     </div>
                 </div>
 
@@ -97,28 +166,8 @@
                         <br />
                     </div>
                 </div>
-
-                <div class="field"><h3>Цели Яндекс метрики</h3></div>
-                <div class="field">
-                    <div class="name">Номер счетчика:</div>
-                    <div class="value">
-                        <input type="text" name="shop_plugins[yandex_counter]" value="{$settings.yandex_counter}" />
-                    </div>
-                </div>
-                <div class="field">
-                    <div class="name">Открыли форму:</div>
-                    <div class="value">
-                        <input type="text" name="shop_plugins[yandex_click]" value="{$settings.yandex_click}" />
-                    </div>
-                </div>
-                <div class="field">
-                    <div class="name">Отправили форму:</div>
-                    <div class="value">
-                        <input type="text" name="shop_plugins[yandex_send]" value="{$settings.yandex_send}" />
-                    </div>
-                </div>
-                <p><br /></p>
             </div>
+
             <div class="block top-padded">
                 <div class="field">
                     <div class="name">Включить комментарий:</div>

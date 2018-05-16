@@ -10,17 +10,19 @@
 /**
  * Получаем настройки по умолчанию
  */
-$pluginSetting = new shopBelllightPluginSettings();
+$pluginSetting = shopBelllightPluginSettings::getInstance();
 
 $settings = array();
 $pluginSetting->getSettingsCheck($settings);
 $namePlugin = $pluginSetting->namePlugin;
+$appSettingsModel = $pluginSetting->appSettingsModel;
 
 /**
  * Устанавливаем настройки для плагина по умолчанию
  */
-$appSettingsModel = new waAppSettingsModel();
-
 foreach($settings as $key=>$value) {
+    if(is_array($value)) {
+        $value = json_encode($value);
+    }
     $appSettingsModel->set(array('shop', $namePlugin), $key, $value);
 }

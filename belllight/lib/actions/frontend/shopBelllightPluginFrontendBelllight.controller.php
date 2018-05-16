@@ -16,6 +16,7 @@ class shopBelllightPluginFrontendBelllightController extends waJsonController
          */
         $pluginSetting = shopBelllightPluginSettings::getInstance();
         $settings = $pluginSetting->getSettingsCheckStatus();
+        $pluginSetting->getSettingsCheck($settings);
 
         $emailSender = $settings['email_sender'] ? $settings['email_sender'] : wa()->getSetting('email', '', 'shop');
         $emailRecipient = $settings['email_recipient'] ? $settings['email_recipient'] : wa()->getSetting('email', '', 'shop');
@@ -42,16 +43,20 @@ class shopBelllightPluginFrontendBelllightController extends waJsonController
         if(!empty($name) && !empty($phone) && $arrASCIIEncode == $belllightAntispam && !empty($policy_checkbox))
         {
             $nameSite = wa('shop')->getConfig()->getGeneralSettings('name');
-            $subject = 'Заказ обратного звонка c сайта';
-            $body = '<h1>Заказ обратного звонка с сайта ' . $nameSite . '</h1>';
-            $body.= '<p>Пользователь <b>' . $name . '</b> заказал звонок на телефон <a href="tel:' . $phone . '"><b>' . $phone . '</b></a></p>';
 
-            if($mess)
-                $body.= '<p>Комментарий: ' . $mess . '</p>';
+            $subject = $settings['theme'];
+
+            $view = wa()->getView();
+            $view->assign('nameSite', $nameSite);
+            $view->assign('name', $name);
+            $view->assign('phone', $phone);
+            $view->assign('mess', $mess ? $mess : '');
+
+            $body = $view->fetch('string:' . $settings['templates_email']);
 
             $mailMessage = new waMailMessage($subject, $body);
-            $mailMessage->setFrom($emailSender, 'Плагин «Обратный звонок (lite)»');
-            $mailMessage->setTo($emailRecipient, 'Администратор');
+            $mailMessage->setFrom($emailSender, $nameSite);
+            $mailMessage->setTo($emailRecipient);
 
             if(!$mailMessage->send())
             {
@@ -69,7 +74,8 @@ class shopBelllightPluginFrontendBelllightController extends waJsonController
             }
 
             /*
-             * - Добовляем в базу при успешной валидации, даже если отправка на почту не сработала
+             * - Добовляем в базу при успешной валидации,
+             *   даже если отправка на почту не сработала
              */
             $bell = array(
                 'name'   => $name,
@@ -84,13 +90,12 @@ class shopBelllightPluginFrontendBelllightController extends waJsonController
             $model->insert($bell);
 
             /*
-             * - Отправляем сообщение в телеграм при успешной валидации, даже если отправка на почту не сработала
+             * - Отправляем сообщение в телеграм и вк при успешной валидации,
+             *   даже если отправка на почту не сработала
              */
-            $chatId = $settings['telegram_chat_id'];
-            $token = $settings['telegram_token'];
-
             $notice = new shopBelllightPluginNotice($settings);
             $notice->notifyTelegram($bell);
+            $notice->notifyVk($bell);
         }
         else
         {

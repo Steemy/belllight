@@ -72,43 +72,80 @@
             {else}
                 <p>Список пуст.</p>
             {/if}
-
         {else}
-            {if !empty($list)}
-                <form method="post">
-                    {$wa->csrf()}
-                    <div class="field-group">
-                        <div class="field">
-                            <div class="name">
-                               Статусы
-                            </div>
-                            <div class="value">
-                                <select name="status_export">
-                                    {if $countListStatus.active > 0}
-                                        <option value="active" selected="selected">Активные</option>
-                                    {/if}
-                                    {if $countListStatus.delete > 0}
-                                        <option value="delete">Удаленые</option>
-                                    {/if}
-                                    {if $countListStatus.active > 0 && $countListStatus.delete > 0}
-                                        <option value="all">Все</option>
-                                    {/if}
-                                </select>
-                            </div>
+            {if $countListStatus.active > 0 && $countListStatus.delete > 0}
+            <form method="post">
+                {$wa->csrf()}
+                <div class="field-group">
+                    <div class="field">
+                        <div class="name">
+                            Кодировка
+                        </div>
+                        <div class="value">
+                            <select name="encoding">
+                                {foreach $encoding as $enc}
+                                <option>{$enc|escape}</option>
+                                {/foreach}
+                            </select>
                         </div>
                     </div>
-                    <div class="field-group">
-                        <div class="field">
-                            <div class="value submit">
-                                <input type="submit" class="button green" value="Экспортировать">
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            {else}
-                <p>Список пуст. Экспорт не возможен.</p>
-            {/if}
 
+                    <div class="field">
+                        <div class="name">
+                            Разделитель данных
+                        </div>
+                        <div class="value">
+                            <select name="delimiter">
+                                <option value=";" selected="selected">Точка с запятой (;)</option>
+                                <option value=",">Запятая (,)</option>
+                                <option value="tab">Табуляция</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="name">
+                            Статус
+                        </div>
+                        <div class="value">
+                            <select name="status">
+                                {if $countListStatus.active > 0}
+                                <option value="active" selected="selected">Активные</option>
+                                {/if}
+                                {if $countListStatus.delete > 0}
+                                <option value="delete">Удаленые</option>
+                                {/if}
+                                <option value="all">Все</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="name">
+                            Количество последних
+                        </div>
+                        <div class="value">
+                            <input type="number" name="count" value="1000" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field-group">
+                    <div class="field">
+                        <div class="value submit">
+                            <input type="hidden" name="plugin_export" value="1" />
+                            <input type="submit" class="button green" value="Экспортировать">
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <style>
+                .field-group input[type="number"],
+                .field-group select { box-sizing:border-box; width:200px; height:24px; }
+            </style>
+            {else}
+            Выгрузка не возможна, список пуст!
+            {/if}
         {/if}
     </div>
 </div>

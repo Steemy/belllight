@@ -16,7 +16,7 @@ class shopBelllightListPluginModel extends waModel
     {
     	$sql = '';
 
-	    $sql = "SELECT COUNT(*) FROM ".$this->table." WHERE `status` = '";
+	    $sql .= "SELECT COUNT(*) FROM ".$this->table." WHERE `status` = '";
 
 	    if ($status == 'active')
 			$status = "active' OR `status` = 'new";
@@ -62,6 +62,5 @@ class shopBelllightListPluginModel extends waModel
 
     	$this->exec("UPDATE `{$this->table}` SET `status` = 'delete' WHERE `status` = 'active' AND `id` = i:id", $data);
     }
-
 
 }
