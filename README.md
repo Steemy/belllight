@@ -3,4 +3,4 @@
 
 <p>Загрузите папку в \wa-apps\shop\plugins\.<br />
 В файле \wa-config\apps\shop\plugins.php пропишите «'belllight' => true,».<br />
-Сбросье кеш, плагин установлен.</p>
+Сбросте кеш, плагин установлен.</p>
